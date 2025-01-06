@@ -1,4 +1,11 @@
-def create_database(conn):
+import psycopg
+
+def create_database(conn: psycopg.Connection):
+    """Create the tables in the PostgreSQL database if they don't already exist.
+
+    Args:
+        conn (psycopg2.extensions.connection): A connection to the PostgreSQL database.
+    """
     with conn as cur:
         cur.execute("CREATE TABLE IF NOT EXISTS products (id SERIAL PRIMARY KEY, name VARCHAR(255), price DECIMAL)")
         cur.execute("CREATE TABLE IF NOT EXISTS orders (id SERIAL PRIMARY KEY, product_name VARCHAR(255), quantity INT, customer_id INT, courier_id INT)")
