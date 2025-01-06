@@ -1,10 +1,10 @@
-import sys
 import os
 import psycopg
 import pandas as pd
 from dotenv import load_dotenv
-from src.database import create_database
+from database import create_database
 from graphics.ascii import welcome, products, couriers, orders, customers
+from products import product_menu
 
 load_dotenv()
 
@@ -23,18 +23,20 @@ conn = psycopg.connect(
     
 )
 
-def main():
+def menu():
     create_database(conn)
         
     print(welcome)
 
     while True:
-        opt = int(input("To open the products menu, type '1'\nTo open the orders menu, type '2'\nTo open the couriers menu, type '3'\nTo export data to CSV, type '4'\nTo open the customers menu, type '5'\nTo exit the app, type '0'\n"))
+        opt = int(input("To open the products menu, type '1'\nTo open the orders menu, type '2'\n\
+To open the couriers menu, type '3'\nTo open the customers menu, type '4'\n\
+To export data to CSV, type '5'\nTo exit the app, type '0'\n"))
 
         if opt == 1:
             os.system('cls')
             print(products)
-            product_menu(product_manager)
+            product_menu(conn)
         elif opt == 2:
             os.system('cls')
             print(orders)
@@ -44,6 +46,10 @@ def main():
             print(couriers)
             courier_menu(courier_manager)
         elif opt == 4:
+            os.system('cls')
+            print(customers)
+            customer_menu(customer_manager)
+        elif opt == 5:
             query = "SELECT * FROM orders"
             df = pd.read_sql_query(query, conn)
             df.to_csv('orders.csv', index=False)
@@ -57,15 +63,11 @@ def main():
             df = pd.read_sql_query(query, conn)
             df.to_csv('customers.csv', index=False)
             print("\nData exported!\n")
-        elif opt == 5:
-            os.system('cls')
-            print(customers)
-            customer_menu(customer_manager)
         elif opt == 0:
             os.system('cls')
             exit()     
         else:
-            print("\nInvalid option!")
+            print("\nInvalid option!\n")
 
 if __name__ == '__main__':
-    main()
+    menu()
