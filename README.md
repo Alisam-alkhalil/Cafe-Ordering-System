@@ -1,6 +1,7 @@
 # Alisam Cafe CLI Ordering System
 
-A professional and fully-featured CLI-based order management system designed for efficiency and scalability. This project showcases advanced Python programming, error handling, and database interaction using PostgreSQL.
+A professional and fully-featured CLI-based order management system designed for efficiency and scalability. This project showcases advanced Python programming, error handling, and robust **database interaction using PostgreSQL**. All data, including products, orders, couriers, and customers, is **persisted** in a PostgreSQL database running within a **Docker container**, ensuring reliable storage and easy management. The application is built using Python and Docker, providing a seamless development and deployment experience.
+
 
 ## Features
 
