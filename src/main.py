@@ -6,6 +6,7 @@ from database import create_database
 from graphics.ascii import welcome, products, couriers, orders, customers
 from products import product_menu
 from couriers import courier_menu
+from customers import customer_menu
 
 load_dotenv()
 
@@ -14,8 +15,6 @@ host = os.getenv('POSTGRES_HOST')
 port = os.getenv('POSTGRES_PORT')
 user = os.getenv('POSTGRES_USER')
 password = os.getenv('POSTGRES_PASSWORD')
-
-
 
 def menu(conn):
     create_database(conn)
@@ -46,7 +45,7 @@ To export data to CSV, type '5'\nTo exit the app, type '0'\n"))
         elif opt == 4:
             os.system('cls')
             print(customers)
-            customer_menu(customer_manager)
+            customer_menu(conn, menu)
 
         elif opt == 5:
             query = "SELECT * FROM orders"
