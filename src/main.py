@@ -1,10 +1,12 @@
 import os
 import psycopg
 import pandas as pd
+from datetime import datetime
 from dotenv import load_dotenv
 from database import create_database
 from graphics.ascii import welcome, products, couriers, orders, customers
 from products import product_menu
+from orders import order_menu
 from couriers import courier_menu
 from customers import customer_menu
 
@@ -35,7 +37,7 @@ To export data to CSV, type '5'\nTo exit the app, type '0'\n"))
         elif opt == 2:
             os.system('cls')
             print(orders)
-            order_menu(order_manager, customer_manager)
+            order_menu(conn, menu)
 
         elif opt == 3:
             os.system('cls')
@@ -48,18 +50,19 @@ To export data to CSV, type '5'\nTo exit the app, type '0'\n"))
             customer_menu(conn, menu)
 
         elif opt == 5:
+            timestamp = datetime.now().strftime('%Y-%m-%d')
             query = "SELECT * FROM orders"
             df = pd.read_sql_query(query, conn)
-            df.to_csv('orders.csv', index=False)
+            df.to_csv(f'csv/orders_{timestamp}.csv', index=False)
             query = "SELECT * FROM products"
             df = pd.read_sql_query(query, conn)
-            df.to_csv('products.csv', index=False)
+            df.to_csv(f'csv/products_{timestamp}.csv', index=False)
             query = "SELECT * FROM couriers"
             df = pd.read_sql_query(query, conn)
-            df.to_csv('couriers.csv', index=False)
+            df.to_csv(f'csv/couriers_{timestamp}.csv', index=False)
             query = "SELECT * FROM customers"
             df = pd.read_sql_query(query, conn)
-            df.to_csv('customers.csv', index=False)
+            df.to_csv(f'csv/customers_{timestamp}.csv', index=False)
             print("\nData exported!\n")
 
         elif opt == 0:

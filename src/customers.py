@@ -173,9 +173,5 @@ def update_spend(conn: psycopg.Connection, id, items):
             "UPDATE customers SET total_spend = total_spend + %s WHERE id = %s",
             (totalspend, id,)
         )
-        cursor.execute(
-            "UPDATE customers SET number_of_orders = number_of_orders + 1 WHERE id = %s",
-            (id,)
-        )
             
         conn.commit()
