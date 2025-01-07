@@ -144,7 +144,7 @@ def update_customer(conn: psycopg.Connection, id: int, email: str, phone: str, n
             conn.commit()
             print("\nCustomer updated.\n")
 
-def update_spend(conn: psycopg.Connection, id, items):
+def update_spend(conn: psycopg.Connection, id: int, items: list):
     """
     Update the total spend and number of orders for a customer.
 
