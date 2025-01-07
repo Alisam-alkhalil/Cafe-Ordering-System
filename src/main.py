@@ -15,16 +15,9 @@ port = os.getenv('POSTGRES_PORT')
 user = os.getenv('POSTGRES_USER')
 password = os.getenv('POSTGRES_PASSWORD')
 
-conn = psycopg.connect(
-    dbname=dbname,
-    host=host,
-    port=port,
-    user=user,
-    password=password
-    
-)
 
-def menu():
+
+def menu(conn):
     create_database(conn)
         
     print(welcome)
@@ -72,10 +65,15 @@ To export data to CSV, type '5'\nTo exit the app, type '0'\n"))
 
         elif opt == 0:
             os.system('cls')
+            conn.close()
             exit()
 
         else:
             print("\nInvalid option!\n")
 
 if __name__ == '__main__':
-    menu()
+    try:
+        conn = psycopg.connect(dbname=dbname, host=host, port=port, user=user, password=password)
+        menu(conn)
+    finally:
+        conn.close()

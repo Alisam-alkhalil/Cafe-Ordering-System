@@ -51,7 +51,7 @@ def product_menu(conn: psycopg.Connection, menu: callable):
 
         elif opt == 0:
             os.system('cls')
-            menu()
+            menu(conn)
 
         else:
             print("Invalid option!")
