@@ -153,7 +153,7 @@ def update_order_status(conn: psycopg.Connection, id: int, new_status: str):
             conn.commit()
             print("\nOrder status updated.\n")
 
-def view_orders_by_status(conn: psycopg.Connection, choic: str):
+def view_orders_by_status(conn: psycopg.Connection, choice: str):
     
     """
     Retrieve orders from the database filtered by status and display them.
