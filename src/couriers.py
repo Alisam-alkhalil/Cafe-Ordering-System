@@ -31,8 +31,8 @@ def courier_menu(conn: psycopg.Connection, menu: callable):
             delete_courier(conn, id)
 
         elif opt == 4:
-            name = int(input("Courier Id: "))
-            check_courier_orders(conn, name)
+            id = int(input("Courier Id: "))
+            check_courier_orders(conn, id)
 
         elif opt == 0:
             os.system('cls')
@@ -103,14 +103,14 @@ def delete_courier(conn, courier_id):
             conn.commit()
 
     
-def check_courier_orders(conn, courier_id):
+def check_courier_orders(conn, id):
 
     """
     Check and display orders for a specific courier.
 
     Args:
         conn (psycopg.Connection): A connection to the PostgreSQL database.
-        courier_id (int): The ID of the courier whose orders need to be checked.
+        courier_name (str): The name of the courier whose orders need to be checked.
 
     This function retrieves and displays all orders associated with the specified
     courier ID. It first checks if the courier ID exists in the database. If not
@@ -121,23 +121,22 @@ def check_courier_orders(conn, courier_id):
     """
 
     count = 0
-    couriers = []
+    couriers = {}
 
     with conn.cursor() as cursor:
         cursor.execute("SELECT * FROM couriers")
         rows = cursor.fetchall()
 
         for x in rows:
-            couriers.append(x[0])
+            couriers[x[0]] = x[1]
 
-        if courier_id not in couriers:
-            print(couriers)
+        try:
+            courier_name = couriers[id]
+        except KeyError:
             print("Error! Courier not found! Try again!")
-            return
-        else:
-            pass
+            return   
 
-        cursor.execute("SELECT * FROM orders WHERE courier_id = %s", (courier_id,))
+        cursor.execute("SELECT * FROM orders WHERE courier = %s", (courier_name,))
         rows = cursor.fetchall()
 
         for x in rows:
@@ -148,4 +147,4 @@ def check_courier_orders(conn, courier_id):
         if count == 0:
             print("No orders found!")
         else:
-            print(f"\nThere are {count} orders for courier number: {courier_id}.\n")
+            print(f"\nThere are {count} orders for courier: {courier_name}.\n")
